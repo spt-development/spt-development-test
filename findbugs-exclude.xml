@@ -1,0 +1,24 @@
+<FindBugsFilter>
+    <!-- There is no recommendation either way any more between static and instance variables:
+         https://www.slf4j.org/faq.html#declared_static, so in general static is fine as is generally the approach
+         people take.
+      -->
+    <Match>
+        <Bug pattern="SLF4J_LOGGER_SHOULD_BE_NON_STATIC" />
+    </Match>
+
+    <!-- Resolved by replacing \r\n through log message config in client application tests -->
+    <Match>
+        <Bug pattern="CRLF_INJECTION_LOGS" />
+    </Match>
+
+    <!-- False positive when try with resources is used: https://github.com/spotbugs/spotbugs/issues/756 -->
+    <Match>
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
+    </Match>
+
+    <!-- In theory code may find the wrong resource, but in relality it is unlikely to be an issue while testing -->
+    <Match>
+        <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE" />
+    </Match>
+</FindBugsFilter>
