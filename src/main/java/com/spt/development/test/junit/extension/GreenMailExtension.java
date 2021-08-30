@@ -74,6 +74,16 @@ public class GreenMailExtension extends GreenMailProxy implements BeforeEachCall
     }
 
     /**
+     * Checks if GreenMail is up and running.
+     *
+     * @return true if ready to serve.
+     */
+    @Override
+    public boolean isRunning() {
+        return greenMail.isRunning();
+    }
+
+    /**
      * Fluent interface for configuring the {@link GreenMail} server.
      *
      * @param config the configuration.

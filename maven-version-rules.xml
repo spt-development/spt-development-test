@@ -10,4 +10,18 @@
         <ignoreVersion type="regex">(?i).*M(?:-?\d+)?</ignoreVersion>
         <ignoreVersion type="regex">(?i).*pr(?:-?\d+)?</ignoreVersion>
     </ignoreVersions>
+
+    <rules>
+        <!-- Dependencies aligned with Spring Boot -->
+        <rule groupId="jakarta.jms" artifactId="jakarta.jms-api" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.*</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+        <rule groupId="org.mockito" artifactId="mockito-core" comparisonMethod="maven">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.*</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+    </rules>
 </ruleset>
