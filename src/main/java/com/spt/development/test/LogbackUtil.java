@@ -34,7 +34,7 @@ public final class LogbackUtil {
      *
      * @param clazz the class that the method under test belongs to.
      * @param act the action to call to perform the test that is expected to result in logging.
-     * @param expectedMessageParts {@link String}&apos;s that are expected to be contained in the log message.
+     * @param expectedMessageParts {@link String}s that are expected to be contained in the log message.
      * @param <T> the return type of the method under test.
      *
      * @return the result of calling the method under test.
@@ -51,7 +51,7 @@ public final class LogbackUtil {
      *
      * @param clazz the class that the method under test belongs to.
      * @param act the action to call to perform the test that is expected to result in logging.
-     * @param expectedMessageParts {@link String}&apos;s that are expected to be contained in the log message.
+     * @param expectedMessageParts {@link String}s that are expected to be contained in the log message.
      * @param <T> the return type of the method under test.
      *
      * @return the result of calling the method under test.
@@ -68,7 +68,7 @@ public final class LogbackUtil {
      *
      * @param clazz the class that the method under test belongs to.
      * @param act the action to call to perform the test that is expected to result in logging.
-     * @param expectedMessageParts {@link String}&apos;s that are expected to be contained in the log message.
+     * @param expectedMessageParts {@link String}s that are expected to be contained in the log message.
      * @param <T> the return type of the method under test.
      *
      * @return the result of calling the method under test.
@@ -86,7 +86,7 @@ public final class LogbackUtil {
      * @param clazz the class that the method under test belongs to.
      * @param act the action to call to perform the test that is expected to result in logging.
      * @param level the level that the log messages to verify are expected to be logged at.
-     * @param expectedMessageParts {@link String}&apos;s that are expected to be contained in the log message.
+     * @param expectedMessageParts {@link String}s that are expected to be contained in the log message.
      * @param <T> the return type of the method under test.
      *
      * @return the result of calling the method under test.
