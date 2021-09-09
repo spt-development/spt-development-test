@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -116,6 +117,20 @@ public class HttpTestManager {
      */
     public Header[] getResponseHeaders() {
         return Arrays.copyOf(responseHeaders, responseHeaders.length);
+    }
+
+    /**
+     * Gets the value of the response header specified.
+     *
+     * @param name the name of the header to retrieve the value for.
+     *
+     * @return an optional header value.
+     */
+    public Optional<String> getResponseHeaderValue(String name) {
+        return Arrays.stream(responseHeaders)
+                .filter(h -> name.equals(h.getName()))
+                .map(Header::getValue)
+                .findFirst();
     }
 
     /**
@@ -468,7 +483,15 @@ public class HttpTestManager {
         doDeleteRequest(basicCredentialsProvider(username, password), path, parameters);
     }
 
-    static CredentialsProvider basicCredentialsProvider(String username, String password) {
+    /**
+     * Creates a new {@link BasicCredentialsProvider} with the credentials set to the username and password provided.
+     *
+     * @param username the username credential.
+     * @param password the password credential.
+     *
+     * @return a new {@link BasicCredentialsProvider}.
+     */
+    public static CredentialsProvider basicCredentialsProvider(String username, String password) {
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
 
