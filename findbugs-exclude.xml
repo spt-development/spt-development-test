@@ -21,4 +21,10 @@
     <Match>
         <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE" />
     </Match>
+
+    <!-- No obvious workaround and since it is a test class we can live with it -->
+    <Match>
+        <Class name="com.spt.development.test.integration.JmsTestManager" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
 </FindBugsFilter>
