@@ -43,7 +43,7 @@
         <logback.version>1.2.11</logback.version>
         <mockito.version>4.5.1</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <spring.version>5.3.20</spring.version>
+        <spring.version>5.3.22</spring.version>
 
         <!-- Plugin versions -->
         <checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
@@ -314,7 +314,7 @@
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <goals>deploy</goals>
-                    <scmCommentPrefix>[skip travis] [maven-release-plugin] </scmCommentPrefix>
+                    <scmCommentPrefix>[skip ci] [maven-release-plugin] </scmCommentPrefix>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
