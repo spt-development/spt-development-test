@@ -52,6 +52,12 @@ jobs:
 
       - name: Create release
         run: mvn --settings .github/maven-settings.xml release:prepare release:perform -DskipTests -Prelease -B
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GIT_HUB_USERNAME: ${{ secrets.GIT_HUB_USERNAME }}
+          GIT_HUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Create GitHub release
         id: create_release
