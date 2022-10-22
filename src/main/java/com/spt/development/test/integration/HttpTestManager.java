@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
@@ -34,10 +35,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
  * Wrapper around {@link org.apache.http.client.HttpClient} to simplify making calls to a HTTP interface. This class
@@ -305,6 +302,154 @@ public class HttpTestManager {
     }
 
     /**
+     * Performs a HTTP PUT request, putting the contents of the resource in the request body.
+     *
+     * @param resource the resource path containing the request body.
+     * @param contentType the content type of the resource body.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred reading the resource or making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(String resource, ContentType contentType, String path, NameValuePair... parameters)
+            throws IOException, URISyntaxException {
+
+        try (final InputStream is = this.getClass().getResourceAsStream(resource)) {
+            doPutRequest(is, contentType, path, parameters);
+        }
+    }
+
+    /**
+     * Performs a HTTP PUT request, putting the contents of the stream in the request body.
+     *
+     * @param is a stream to read the request body from.
+     * @param contentType the content type of the resource body.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(InputStream is, ContentType contentType, String path, NameValuePair... parameters)
+            throws IOException, URISyntaxException {
+
+        doPutRequest(null, new InputStreamEntity(is, contentType), path, parameters);
+    }
+
+    /**
+     * Performs a HTTP PUT request using basic authentication, putting the contents of the resource in the request body.
+     *
+     * @param username the username used for authentication.
+     * @param password the password used for authentication.
+     * @param resource the resource path containing the request body.
+     * @param contentType the content type of the resource body.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred reading the resource or making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(String username, String password, String resource, ContentType contentType, String path, NameValuePair... parameters)
+            throws IOException, URISyntaxException {
+
+        try (final InputStream is = this.getClass().getResourceAsStream(resource)) {
+            doPutRequest(basicCredentialsProvider(username, password), is, contentType, path, parameters);
+        }
+    }
+
+    /**
+     * Performs a HTTP PUT request using basic authentication, putting the contents of the stream in the request body.
+     *
+     * @param username the username used for authentication.
+     * @param password the password used for authentication.
+     * @param is a stream to read the request body from.
+     * @param contentType the content type of the resource body.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(String username, String password, InputStream is, ContentType contentType, String path, NameValuePair... parameters)
+            throws IOException, URISyntaxException {
+
+        doPutRequest(basicCredentialsProvider(username, password), is, contentType, path, parameters);
+    }
+
+    /**
+     * Performs a HTTP PUT request with authentication, putting the contents of the stream in the request body.
+     *
+     * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
+     *                            or is/can be done through some other means such as with headers added to the request.
+     * @param is a stream to read the request body from.
+     * @param contentType the content type of the resource body.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(CredentialsProvider credentialsProvider, InputStream is, ContentType contentType, String path,
+                              NameValuePair... parameters) throws IOException, URISyntaxException {
+
+        doPutRequest(credentialsProvider, new InputStreamEntity(is, contentType), path, parameters);
+    }
+
+    /**
+     * Performs a HTTP PUT request, putting the request body defined by the {@link HttpEntity}.
+     *
+     * @param httpEntity the request body definition.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(HttpEntity httpEntity, String path, NameValuePair... parameters) throws IOException, URISyntaxException {
+        doPutRequest(null, httpEntity, path, parameters);
+    }
+
+    /**
+     * Performs a HTTP PUT request using basic authentication, putting the request body defined by the {@link HttpEntity}.
+     *
+     * @param username the username used for authentication.
+     * @param password the password used for authentication.
+     * @param httpEntity the request body definition.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(String username, String password, HttpEntity httpEntity, String path, NameValuePair... parameters)
+            throws IOException, URISyntaxException {
+
+        doPutRequest(basicCredentialsProvider(username, password), httpEntity, path, parameters);
+    }
+
+    /**
+     * Performs a HTTP PUT request with authentication, putting the request body defined by the {@link HttpEntity}.
+     *
+     * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
+     *                            or is/can be done through some other means such as with headers added to the request.
+     * @param httpEntity the request body definition.
+     * @param path the path to make the HTTP request to.
+     * @param parameters optional query parameters to include in the request.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
+     */
+    public void doPutRequest(CredentialsProvider credentialsProvider, HttpEntity httpEntity, String path, NameValuePair... parameters)
+            throws IOException, URISyntaxException {
+
+        final HttpPut request = new HttpPut();
+        request.setEntity(httpEntity);
+
+        doRequest(credentialsProvider, request, path, parameters);
+    }
+
+    /**
      * Performs a HTTP PATCH request using basic authentication, with no request body.
      *
      * @param username the username used for authentication.
@@ -543,9 +688,12 @@ public class HttpTestManager {
 
             statusCode = response.getStatusLine().getStatusCode();
             responseHeaders = response.getAllHeaders();
-            responseBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+            responseBody = null;
+
+            if (response.getEntity() != null) {
+                responseBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+            }
         }
-        assertThat(responseBody, is(notNullValue()));
     }
 
     private org.apache.http.impl.client.CloseableHttpClient createHttpClient() {
