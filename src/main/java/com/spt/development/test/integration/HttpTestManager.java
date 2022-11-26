@@ -2,42 +2,44 @@ package com.spt.development.test.integration;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.AuthCache;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicAuthCache;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.auth.AuthCache;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.impl.auth.BasicAuthCache;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.auth.BasicScheme;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.net.URIBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
- * Wrapper around {@link org.apache.http.client.HttpClient} to simplify making calls to a HTTP interface. This class
+ * Wrapper around {@link org.apache.hc.client5.http.classic.HttpClient} to simplify making calls to a HTTP interface. This class
  * is stateful storing the results of requests between calls. This makes it useful for use with Cucumber where one
  * step makes a HTTP call and subsequent steps assert the results of that call.
  */
@@ -295,10 +297,14 @@ public class HttpTestManager {
     public void doPostRequest(CredentialsProvider credentialsProvider, HttpEntity httpEntity, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        final HttpPost request = new HttpPost();
-        request.setEntity(httpEntity);
+        final Function<URI, HttpUriRequestBase> requestFactory = (uri) -> {
+            final HttpPost request = new HttpPost(uri);
+            request.setEntity(httpEntity);
 
-        doRequest(credentialsProvider, request, path, parameters);
+            return request;
+        };
+
+        doRequest(credentialsProvider, requestFactory, path, parameters);
     }
 
     /**
@@ -443,10 +449,14 @@ public class HttpTestManager {
     public void doPutRequest(CredentialsProvider credentialsProvider, HttpEntity httpEntity, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        final HttpPut request = new HttpPut();
-        request.setEntity(httpEntity);
+        final Function<URI, HttpUriRequestBase> requestFactory = (uri) -> {
+            final HttpPut request = new HttpPut(uri);
+            request.setEntity(httpEntity);
 
-        doRequest(credentialsProvider, request, path, parameters);
+            return request;
+        };
+
+        doRequest(credentialsProvider, requestFactory, path, parameters);
     }
 
     /**
@@ -549,10 +559,14 @@ public class HttpTestManager {
     public void doPatchRequest(CredentialsProvider credentialsProvider, HttpEntity httpEntity, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        final HttpPatch request = new HttpPatch();
-        request.setEntity(httpEntity);
+        final Function<URI, HttpUriRequestBase> requestFactory = (uri) -> {
+            final HttpPatch request = new HttpPatch(uri);
+            request.setEntity(httpEntity);
 
-        doRequest(credentialsProvider, request, path, parameters);
+            return request;
+        };
+
+        doRequest(credentialsProvider, requestFactory, path, parameters);
     }
 
     /**
@@ -565,7 +579,7 @@ public class HttpTestManager {
      * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
      */
     public void doGetRequest(String path, NameValuePair... parameters) throws IOException, URISyntaxException {
-        doRequest(null, new HttpGet(), path, parameters);
+        doRequest(null, HttpGet::new, path, parameters);
     }
 
     /**
@@ -597,7 +611,7 @@ public class HttpTestManager {
     public void doGetRequest(CredentialsProvider credentialsProvider, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        doRequest(credentialsProvider, new HttpGet(), path, parameters);
+        doRequest(credentialsProvider, HttpGet::new, path, parameters);
     }
 
     /**
@@ -610,7 +624,7 @@ public class HttpTestManager {
      * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
      */
     public void doDeleteRequest(String path, NameValuePair... parameters) throws IOException, URISyntaxException {
-        doRequest(null, new HttpDelete(), path, parameters);
+        doRequest(null, HttpDelete::new, path, parameters);
     }
 
     /**
@@ -637,8 +651,8 @@ public class HttpTestManager {
      * @return a new {@link BasicCredentialsProvider}.
      */
     public static CredentialsProvider basicCredentialsProvider(String username, String password) {
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+        final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(new AuthScope(null, -1), new UsernamePasswordCredentials(username, password.toCharArray()));
 
         return credentialsProvider;
     }
@@ -657,37 +671,55 @@ public class HttpTestManager {
     public void doDeleteRequest(CredentialsProvider credentialsProvider, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        doRequest(credentialsProvider, new HttpDelete(), path, parameters);
+        doRequest(credentialsProvider, HttpDelete::new, path, parameters);
     }
 
     /**
-     * Performs a generic HTTP request with authentication, defined by the {@link HttpRequestBase}.
+     * Performs a generic HTTP request with authentication, defined by the {@link HttpUriRequestBase}.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
-     * @param request the defintion of the request to make.
+     * @param requestFactory a factory for creating a request for a {@link URI}.
      * @param path the path to make the HTTP request to.
      * @param parameters optional query parameters to include in the request.
      *
      * @throws IOException a problem occurred making the HTTP request.
      * @throws URISyntaxException a problem occurred constructing the URI to make the HTTP request to.
      */
-    public void doRequest(CredentialsProvider credentialsProvider, HttpRequestBase request, String path, NameValuePair... parameters)
+    public void doRequest(CredentialsProvider credentialsProvider,
+                          Function<URI, HttpUriRequestBase> requestFactory,
+                          String path, NameValuePair... parameters)
             throws URISyntaxException, IOException {
 
-        request.setURI(new URIBuilder()
-                .setScheme(scheme)
-                .setHost(host)
-                .setPort(port)
-                .setPath(path)
-                .setParameters(parameters)
-                .build());
+        final HttpUriRequestBase request = requestFactory.apply(
+                new URIBuilder()
+                        .setScheme(scheme)
+                        .setHost(host)
+                        .setPort(port)
+                        .setPath(path)
+                        .setParameters(parameters)
+                        .build()
+        );
+
+        doRequest(credentialsProvider, request);
+    }
+
+    /**
+     * Performs a generic HTTP request with authentication, defined by the {@link HttpUriRequestBase}.
+     *
+     * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
+     *                            or is/can be done through some other means such as with headers added to the request.
+     * @param request the defintion of the request to make.
+     *
+     * @throws IOException a problem occurred making the HTTP request.
+     */
+    public void doRequest(CredentialsProvider credentialsProvider, HttpUriRequestBase request) throws IOException {
 
         try (final CloseableHttpClient client = createHttpClient();
              final CloseableHttpResponse response = client.execute(request, createHttpContext(credentialsProvider))) {
 
-            statusCode = response.getStatusLine().getStatusCode();
-            responseHeaders = response.getAllHeaders();
+            statusCode = response.getCode();
+            responseHeaders = response.getHeaders();
             responseBody = null;
 
             if (response.getEntity() != null) {
@@ -696,8 +728,8 @@ public class HttpTestManager {
         }
     }
 
-    private org.apache.http.impl.client.CloseableHttpClient createHttpClient() {
-        return HttpClientBuilder.create()
+    private CloseableHttpClient createHttpClient() {
+        return HttpClients.custom()
                 .disableAutomaticRetries()
                 .build();
     }
@@ -707,10 +739,15 @@ public class HttpTestManager {
     // credentials, however you can't retry with the same HttpPost entity.
     private HttpContext createHttpContext(CredentialsProvider credentialsProvider) {
         if (credentialsProvider != null) {
-            final HttpHost targetHost = new HttpHost(host, port, scheme);
+            final HttpHost targetHost = new HttpHost(scheme, host, port);
+            final BasicScheme authScheme = new BasicScheme();
+
+            authScheme.initPreemptive(credentialsProvider.getCredentials(
+                    new AuthScope(host, port), null
+            ));
 
             final AuthCache authCache = new BasicAuthCache();
-            authCache.put(targetHost, new BasicScheme());
+            authCache.put(targetHost, authScheme);
 
             final HttpClientContext context = HttpClientContext.create();
             context.setCredentialsProvider(credentialsProvider);
