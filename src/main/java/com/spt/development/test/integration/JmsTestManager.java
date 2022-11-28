@@ -1,13 +1,13 @@
 package com.spt.development.test.integration;
 
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.JmsUtils;
 import org.springframework.jms.support.converter.MessageConverter;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
