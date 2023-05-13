@@ -28,7 +28,9 @@ Building locally
 
 To build the project, run the following maven command:
 
-    $ mvn clean install
+```shell
+$ mvn clean install
+```
 
 Release
 =======
