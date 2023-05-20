@@ -16,7 +16,6 @@ import org.apache.hc.client5.http.impl.auth.BasicAuthCache;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.auth.BasicScheme;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ContentType;
@@ -715,16 +714,16 @@ public class HttpTestManager {
      */
     public void doRequest(CredentialsProvider credentialsProvider, HttpUriRequestBase request) throws IOException {
 
-        try (final CloseableHttpClient client = createHttpClient();
-             final CloseableHttpResponse response = client.execute(request, createHttpContext(credentialsProvider))) {
+        try (final CloseableHttpClient client = createHttpClient()) {
+            responseBody = client.execute(request, createHttpContext(credentialsProvider), response -> {
+                statusCode = response.getCode();
+                responseHeaders = response.getHeaders();
 
-            statusCode = response.getCode();
-            responseHeaders = response.getHeaders();
-            responseBody = null;
-
-            if (response.getEntity() != null) {
-                responseBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
-            }
+                if (response.getEntity() != null) {
+                    return IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+                }
+                return null;
+            });
         }
     }
 
