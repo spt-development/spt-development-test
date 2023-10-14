@@ -29,7 +29,7 @@ Building locally
 To build the project, run the following maven command:
 
 ```shell
-$ mvn clean install
+$ ./mvnw clean install
 ```
 
 Release

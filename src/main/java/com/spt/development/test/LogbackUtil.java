@@ -133,11 +133,9 @@ public final class LogbackUtil {
             asserts.accept(eventCaptor.getAllValues());
 
             return result;
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             return fail(t);
-        }
-        finally {
+        } finally {
             loggerContext.getLogger(clazz).detachAppender(appender);
         }
     }
