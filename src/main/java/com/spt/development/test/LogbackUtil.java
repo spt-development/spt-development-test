@@ -18,6 +18,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -131,6 +132,36 @@ public final class LogbackUtil {
             verify(appender, atLeastOnce()).doAppend(eventCaptor.capture());
 
             asserts.accept(eventCaptor.getAllValues());
+
+            return result;
+        } catch (Throwable t) {
+            return fail(t);
+        } finally {
+            loggerContext.getLogger(clazz).detachAppender(appender);
+        }
+    }
+
+    /**
+     * Verifies that calling the {@link Callable} action results in no messages being logged.
+     *
+     * @param clazz the class that the method under test belongs to.
+     * @param act the action to call to perform the test that is expected to result in no logging.
+     * @param <T> the return type of the method under test.
+     *
+     * @return the result of calling the method under test.
+     */
+    public static <T> T verifyNoLogging(Class<?> clazz, Callable<T> act) {
+        final Appender<ILoggingEvent> appender = createMockAppender();
+
+        final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        loggerContext.getLogger(clazz).addAppender(appender);
+
+        final ArgumentCaptor<ILoggingEvent> eventCaptor = ArgumentCaptor.forClass(ILoggingEvent.class);
+
+        try {
+            final T result = act.call();
+
+            verify(appender, never()).doAppend(eventCaptor.capture());
 
             return result;
         } catch (Throwable t) {
