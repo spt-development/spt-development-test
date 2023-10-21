@@ -8,10 +8,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
-          token: ${{ secrets.GIT_HUB_TOKEN }}
-          persist-credentials: false
 
       - name: Set up JDK 21
         uses: oracle-actions/setup-java@v1
@@ -27,10 +23,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
-          token: ${{ secrets.GIT_HUB_TOKEN }}
-          persist-credentials: false
 
       - name: Set up JDK 21
         uses: oracle-actions/setup-java@v1
@@ -54,12 +46,12 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Create release
-        run: ./mvnw --settings .github/maven-settings.xml release:prepare release:perform -DskipTests -Prelease -B
+        run: ./mvnw --settings .github/maven-settings.xml release:prepare release:perform -DskipTests -B
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GIT_HUB_USERNAME: ${{ secrets.GIT_HUB_USERNAME }}
-          GIT_HUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
+          GIT_HUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN_2 }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Create GitHub release
