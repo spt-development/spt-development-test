@@ -8,6 +8,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up JDK 21
         uses: oracle-actions/setup-java@v1
@@ -23,6 +26,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up JDK 21
         uses: oracle-actions/setup-java@v1
@@ -51,7 +57,7 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GIT_HUB_USERNAME: ${{ secrets.GIT_HUB_USERNAME }}
-          GIT_HUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN_2 }}
+          GIT_HUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Create GitHub release
