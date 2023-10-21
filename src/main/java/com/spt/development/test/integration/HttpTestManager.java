@@ -109,7 +109,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Gets all of the response headers returned by the last HTTP request.
+     * Gets all the response headers returned by the last HTTP request.
      *
      * @return the response headers returned by the last HTTP request.
      */
@@ -155,7 +155,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP POST request, posting the contents of the resource in the request body.
+     * Performs an HTTP POST request, posting the contents of the resource in the request body.
      *
      * @param resource the resource path containing the request body.
      * @param contentType the content type of the resource body.
@@ -168,13 +168,13 @@ public class HttpTestManager {
     public void doPostRequest(String resource, ContentType contentType, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        try (final InputStream is = this.getClass().getResourceAsStream(resource)) {
+        try (InputStream is = this.getClass().getResourceAsStream(resource)) {
             doPostRequest(is, contentType, path, parameters);
         }
     }
 
     /**
-     * Performs a HTTP POST request, posting the contents of the stream in the request body.
+     * Performs an HTTP POST request, posting the contents of the stream in the request body.
      *
      * @param is a stream to read the request body from.
      * @param contentType the content type of the resource body.
@@ -191,7 +191,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP POST request using basic authentication, posting the contents of the resource in the request body.
+     * Performs an HTTP POST request using basic authentication, posting the contents of the resource in the request body.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -206,13 +206,13 @@ public class HttpTestManager {
     public void doPostRequest(String username, String password, String resource, ContentType contentType, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        try (final InputStream is = this.getClass().getResourceAsStream(resource)) {
+        try (InputStream is = this.getClass().getResourceAsStream(resource)) {
             doPostRequest(basicCredentialsProvider(username, password), is, contentType, path, parameters);
         }
     }
 
     /**
-     * Performs a HTTP POST request using basic authentication, posting the contents of the stream in the request body.
+     * Performs an HTTP POST request using basic authentication, posting the contents of the stream in the request body.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -231,7 +231,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP POST request with authentication, posting the contents of the stream in the request body.
+     * Performs an HTTP POST request with authentication, posting the contents of the stream in the request body.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -250,7 +250,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP POST request, posting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP POST request, posting the request body defined by the {@link HttpEntity}.
      *
      * @param httpEntity the request body definition.
      * @param path the path to make the HTTP request to.
@@ -264,7 +264,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP POST request using basic authentication, posting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP POST request using basic authentication, posting the request body defined by the {@link HttpEntity}.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -282,7 +282,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP POST request with authentication, posting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP POST request with authentication, posting the request body defined by the {@link HttpEntity}.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -307,7 +307,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PUT request, putting the contents of the resource in the request body.
+     * Performs an HTTP PUT request, putting the contents of the resource in the request body.
      *
      * @param resource the resource path containing the request body.
      * @param contentType the content type of the resource body.
@@ -320,13 +320,13 @@ public class HttpTestManager {
     public void doPutRequest(String resource, ContentType contentType, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        try (final InputStream is = this.getClass().getResourceAsStream(resource)) {
+        try (InputStream is = this.getClass().getResourceAsStream(resource)) {
             doPutRequest(is, contentType, path, parameters);
         }
     }
 
     /**
-     * Performs a HTTP PUT request, putting the contents of the stream in the request body.
+     * Performs an HTTP PUT request, putting the contents of the stream in the request body.
      *
      * @param is a stream to read the request body from.
      * @param contentType the content type of the resource body.
@@ -343,7 +343,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PUT request using basic authentication, putting the contents of the resource in the request body.
+     * Performs an HTTP PUT request using basic authentication, putting the contents of the resource in the request body.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -358,13 +358,13 @@ public class HttpTestManager {
     public void doPutRequest(String username, String password, String resource, ContentType contentType, String path, NameValuePair... parameters)
             throws IOException, URISyntaxException {
 
-        try (final InputStream is = this.getClass().getResourceAsStream(resource)) {
+        try (InputStream is = this.getClass().getResourceAsStream(resource)) {
             doPutRequest(basicCredentialsProvider(username, password), is, contentType, path, parameters);
         }
     }
 
     /**
-     * Performs a HTTP PUT request using basic authentication, putting the contents of the stream in the request body.
+     * Performs an HTTP PUT request using basic authentication, putting the contents of the stream in the request body.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -383,7 +383,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PUT request with authentication, putting the contents of the stream in the request body.
+     * Performs an HTTP PUT request with authentication, putting the contents of the stream in the request body.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -402,7 +402,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PUT request, putting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP PUT request, putting the request body defined by the {@link HttpEntity}.
      *
      * @param httpEntity the request body definition.
      * @param path the path to make the HTTP request to.
@@ -416,7 +416,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PUT request using basic authentication, putting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP PUT request using basic authentication, putting the request body defined by the {@link HttpEntity}.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -434,7 +434,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PUT request with authentication, putting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP PUT request with authentication, putting the request body defined by the {@link HttpEntity}.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -459,7 +459,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PATCH request using basic authentication, with no request body.
+     * Performs an HTTP PATCH request using basic authentication, with no request body.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -474,7 +474,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PATCH request using basic authentication, posting the contents of the stream in the request body.
+     * Performs an HTTP PATCH request using basic authentication, posting the contents of the stream in the request body.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -493,7 +493,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PATCH request with authentication, posting the contents of the stream in the request body.
+     * Performs an HTTP PATCH request with authentication, posting the contents of the stream in the request body.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -512,7 +512,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PATCH request, posting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP PATCH request, posting the request body defined by the {@link HttpEntity}.
      *
      * @param httpEntity the request body definition.
      * @param path the path to make the HTTP request to.
@@ -526,7 +526,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PATCH request using basic authentication, posting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP PATCH request using basic authentication, posting the request body defined by the {@link HttpEntity}.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -544,7 +544,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP PATCH request with authentication, posting the request body defined by the {@link HttpEntity}.
+     * Performs an HTTP PATCH request with authentication, posting the request body defined by the {@link HttpEntity}.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -569,7 +569,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP GET request.
+     * Performs an HTTP GET request.
      *
      * @param path the path to make the HTTP request to.
      * @param parameters optional query parameters to include in the request.
@@ -582,7 +582,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP GET request using basic authentication.
+     * Performs an HTTP GET request using basic authentication.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -597,7 +597,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP GET request with authentication.
+     * Performs an HTTP GET request with authentication.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -614,7 +614,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP DELETE request.
+     * Performs an HTTP DELETE request.
      *
      * @param path the path to make the HTTP request to.
      * @param parameters optional query parameters to include in the request.
@@ -627,7 +627,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP DELETE request using basic authentication.
+     * Performs an HTTP DELETE request using basic authentication.
      *
      * @param username the username used for authentication.
      * @param password the password used for authentication.
@@ -657,7 +657,7 @@ public class HttpTestManager {
     }
 
     /**
-     * Performs a HTTP DELETE request with authentication.
+     * Performs an HTTP DELETE request with authentication.
      *
      * @param credentialsProvider used for authentication. This parameter is nullable if authentication is not required
      *                            or is/can be done through some other means such as with headers added to the request.
@@ -714,7 +714,7 @@ public class HttpTestManager {
      */
     public void doRequest(CredentialsProvider credentialsProvider, HttpUriRequestBase request) throws IOException {
 
-        try (final CloseableHttpClient client = createHttpClient()) {
+        try (CloseableHttpClient client = createHttpClient()) {
             responseBody = client.execute(request, createHttpContext(credentialsProvider), response -> {
                 statusCode = response.getCode();
                 responseHeaders = response.getHeaders();
