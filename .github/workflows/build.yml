@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.repository.name }}
+          repository: ${{ github.repository }}
           token: ${{ secrets.GIT_HUB_TOKEN }}
 
       - name: Set up JDK 21
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.repository.name }}
+          repository: ${{ github.repository }}
           token: ${{ secrets.GIT_HUB_TOKEN }}
 
       - name: Set up JDK 21
