@@ -19,12 +19,12 @@ import static org.springframework.jms.support.destination.JmsDestinationAccessor
  * Wrapper around {@link JmsTemplate} to simplify consuming messages from a JMS queue.
  */
 public class JmsTestManager {
-    private static final Logger LOG = LoggerFactory.getLogger(JmsTestManager.class);
-
     /**
      * The amount of time in ms to wait for messages to be received on the JMS queue, when messages are expected.
      */
     public static final int ASYNC_TEST_TIMEOUT_MS = 30000;
+
+    private static final Logger LOG = LoggerFactory.getLogger(JmsTestManager.class);
 
     private final JmsTemplate jmsTemplate;
 
@@ -62,8 +62,7 @@ public class JmsTestManager {
 
         try {
             return doConsumeAllMessagesOnQueue(queue, messagesExpected);
-        }
-        finally {
+        } finally {
             jmsTemplate.setReceiveTimeout(originalTimeout);
         }
     }
@@ -84,8 +83,10 @@ public class JmsTestManager {
         final List<Object> messages = new ArrayList<>(Collections.singletonList(firstMessage));
 
         if (!messagesExpected) {
-            LOG.warn("Found message with contents: {} on queue: '{}' when clearing it. This usually indicates a " +
-                    "previous test failed", firstMessage, queue);
+            LOG.warn(
+                "Found message with contents: {} on queue: '{}' when clearing it. This usually indicates a previous test failed",
+                firstMessage, queue
+            );
         }
         jmsTemplate.setReceiveTimeout(RECEIVE_TIMEOUT_NO_WAIT);
 
@@ -128,8 +129,7 @@ public class JmsTestManager {
             }
 
             return doReceiveAndConvert(queue);
-        }
-        finally {
+        } finally {
             jmsTemplate.setReceiveTimeout(originalTimeout);
         }
     }
@@ -155,8 +155,7 @@ public class JmsTestManager {
 
         try {
             return converter.fromMessage(message);
-        }
-        catch (JMSException ex) {
+        } catch (JMSException ex) {
             throw JmsUtils.convertJmsAccessException(ex);
         }
     }
