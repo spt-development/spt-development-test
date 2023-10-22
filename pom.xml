@@ -41,20 +41,20 @@
         <!-- Dependency versions, matched to Spring Boot -->
         <commons-lang.version>3.12.0</commons-lang.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <httpcore5.version>5.2.2</httpcore5.version>
+        <httpcore5.version>5.2.3</httpcore5.version>
         <httpclient5.version>5.2.1</httpclient5.version>
         <jakarta-jms.version>3.1.0</jakarta-jms.version>
         <junit-jupiter.version>5.9.3</junit-jupiter.version>
         <logback.version>1.4.11</logback.version>
         <mockito.version>5.3.1</mockito.version>
         <slf4j.version>2.0.9</slf4j.version>
-        <spring.version>6.0.12</spring.version>
+        <spring.version>6.0.13</spring.version>
 
         <!-- Plugin versions -->
         <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.3.0</checkstyle-maven-plugin.version>
-        <dependency-check-maven.version>8.4.0</dependency-check-maven.version>
-        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+        <dependency-check-maven.version>8.4.1</dependency-check-maven.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <license-maven-plugin.version>2.2.0</license-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
