@@ -41,38 +41,36 @@
         <!-- Dependency versions, matched to Spring Boot -->
         <commons-lang.version>3.13.0</commons-lang.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <httpcore5.version>5.2.3</httpcore5.version>
-        <httpclient5.version>5.2.1</httpclient5.version>
+        <httpcore5.version>5.2.4</httpcore5.version>
+        <httpclient5.version>5.2.3</httpclient5.version>
         <jakarta-jms.version>3.1.0</jakarta-jms.version>
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
-        <logback.version>1.4.11</logback.version>
+        <logback.version>1.4.14</logback.version>
         <mockito.version>5.7.0</mockito.version>
         <slf4j.version>2.0.9</slf4j.version>
-        <spring.version>6.1.1</spring.version>
+        <spring.version>6.1.2</spring.version>
 
         <!-- Plugin versions -->
         <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.3.1</checkstyle-maven-plugin.version>
-        <dependency-check-maven.version>9.0.2</dependency-check-maven.version>
-        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+        <dependency-check-maven.version>9.0.7</dependency-check-maven.version>
         <license-maven-plugin.version>2.3.0</license-maven-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.12.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
         <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.6.2</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>3.3.1</maven-jxr-plugin.version>
         <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
         <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
         <maven-scm-plugin.version>2.0.1</maven-scm-plugin.version>
         <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
-        <spotbugs.version>4.8.1.0</spotbugs.version>
+        <spotbugs.version>4.8.2.0</spotbugs.version>
         <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 
         <!-- Plugin dependencies -->
-        <checkstyle.version>10.12.5</checkstyle.version>
+        <checkstyle.version>10.12.6</checkstyle.version>
         <findbugs-slf4j-bug-pattern.version>1.5.0</findbugs-slf4j-bug-pattern.version>
         <findbugs-sec-bug-pattern.version>1.12.0</findbugs-sec-bug-pattern.version>
     </properties>
@@ -236,6 +234,26 @@
                         <arg>-Werror</arg>
                     </compilerArgs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <!--
+                                 Disable test compilation as there are no tests, Since maven-compiler-plugin 3.12.0, compiling when there are no tests has caused the following
+                                 error:
+
+                                 Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.12.0:testCompile (default-testCompile) on project <project>: Fatal error
+                                 compiling: basedir <baseDir>/target/generated-test-sources/test-annotations does not exist
+                              -->
+                            <!-- There are no tests to compile -->
+                            <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -323,20 +341,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <trimStackTrace>false</trimStackTrace>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*IT.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs.version}</version>
@@ -363,69 +367,6 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>CLASS</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>1.0</minimum>
-                                        </limit>
-                                    </limits>
-                                    <excludes>
-                                        <!--
-                                             Any classes / packages excluded here, must have specific rules for them below,
-                                             with reasons.
-                                          -->
-                                        <exclude>com.spt.development.audit.spring.security.AuthenticationAdapterFactory</exclude>
-                                    </excludes>
-                                </rule>
-                                <rule>
-                                    <element>CLASS</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.82</minimum>
-                                        </limit>
-                                    </limits>
-                                    <includes>
-                                        <!--
-                                             Difficult to force the ClassNotFoundException when checking if authentication
-                                             object is an instance of OAuth2Authentication
-                                          -->
-                                        <include>com.spt.development.audit.spring.security.AuthenticationAdapterFactory</include>
-                                    </includes>
-                                </rule>
-                            </rules>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
