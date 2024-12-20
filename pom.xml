@@ -36,7 +36,7 @@
 
 	    <!-- Dependency versions -->
         <commons-io.version>2.18.0</commons-io.version>
-        <greenmail.version>2.1.1</greenmail.version>
+        <greenmail.version>2.1.2</greenmail.version>
 
         <!-- Dependency versions, matched to Spring Boot -->
         <commons-lang.version>3.17.0</commons-lang.version>
@@ -44,22 +44,22 @@
         <httpcore5.version>5.3.1</httpcore5.version>
         <httpclient5.version>5.4.1</httpclient5.version>
         <jakarta-jms.version>3.1.0</jakarta-jms.version>
-        <junit-jupiter.version>5.11.3</junit-jupiter.version>
+        <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <logback.version>1.5.12</logback.version>
         <mockito.version>5.14.2</mockito.version>
         <slf4j.version>2.0.16</slf4j.version>
-        <spring.version>6.2.0</spring.version>
+        <spring.version>6.2.1</spring.version>
 
         <!-- Plugin versions -->
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
-        <dependency-check-maven.version>11.1.0</dependency-check-maven.version>
-        <license-maven-plugin.version>2.4.0</license-maven-plugin.version>
+        <dependency-check-maven.version>11.1.1</dependency-check-maven.version>
+        <license-maven-plugin.version>2.5.0</license-maven-plugin.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.11.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
         <maven-pmd-plugin.version>3.26.0</maven-pmd-plugin.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
@@ -70,10 +70,10 @@
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
         <!-- Plugin dependencies -->
-        <checkstyle.version>10.20.1</checkstyle.version>
+        <checkstyle.version>10.21.0</checkstyle.version>
         <findbugs-slf4j-bug-pattern.version>1.5.0</findbugs-slf4j-bug-pattern.version>
         <findbugs-sec-bug-pattern.version>1.13.0</findbugs-sec-bug-pattern.version>
-        <pmd.version>7.7.0</pmd.version>
+        <pmd.version>7.8.0</pmd.version>
     </properties>
 
     <dependencyManagement>
