@@ -52,6 +52,7 @@
 
         <!-- Plugin versions -->
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <central-publishing-plugin.version>0.7.0</central-publishing-plugin.version>
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
         <dependency-check-maven.version>12.1.1</dependency-check-maven.version>
         <license-maven-plugin.version>2.5.0</license-maven-plugin.version>
@@ -65,7 +66,6 @@
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <maven-scm-plugin.version>2.1.0</maven-scm-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <nexus-staging-plugin.version>1.7.0</nexus-staging-plugin.version>
         <spotbugs.version>4.9.3.0</spotbugs.version>
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
@@ -225,9 +225,9 @@
                     <version>${license-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexus-staging-plugin.version}</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${central-publishing-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -618,13 +618,13 @@
                         <!-- Version defined in pluginManagement section -->
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
                         </configuration>
                         <!-- Version defined in pluginManagement section -->
                     </plugin>
@@ -655,13 +655,5 @@
             <id>github</id>
             <url>https://github.com/spt-development/spt-development-test</url>
         </site>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
 </project>
